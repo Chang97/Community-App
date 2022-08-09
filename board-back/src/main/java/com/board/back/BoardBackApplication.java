@@ -12,10 +12,5 @@ public class BoardBackApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BoardBackApplication.class, args);
 	}
-	
-	@RequestMapping("/")
-	public String home() {
-		return "hello world spring";
-	}
 
 }
