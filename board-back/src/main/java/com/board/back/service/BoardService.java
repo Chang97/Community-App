@@ -1,5 +1,6 @@
 package com.board.back.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,17 @@ public class BoardService {
 	public ResponseEntity<Board> getBoard(Integer no) {
 		Board board = boardRepository.findById(no).orElseThrow(() -> new ResourceNotFoundException("Not Found Data no [" + no + "]"));
 		return ResponseEntity.ok(board);
+	}
+
+	public ResponseEntity<Board> updateBoard(Integer no, Board updateBoard) {
+		Board board = boardRepository.findById(no).orElseThrow(() -> new ResourceNotFoundException("Not Found Data no [" + no + "]"));
+		
+		board.setType(updateBoard.getType());
+		board.setTitle(updateBoard.getTitle());
+		board.setContents(updateBoard.getContents());
+		board.setUpdatedTime(new Date());
+		
+		Board endUpdateBoard = boardRepository.save(board);
+		return ResponseEntity.ok(endUpdateBoard);
 	}
 }
