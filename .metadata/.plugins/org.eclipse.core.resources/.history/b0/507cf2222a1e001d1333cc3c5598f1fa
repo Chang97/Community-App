@@ -1,0 +1,5 @@
+package com.board.back.util;
+
+public class PagingUtil {
+
+}

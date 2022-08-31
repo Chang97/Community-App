@@ -1,0 +1,70 @@
+package com.board.back.service;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.board.back.exception.ResourceNotFoundException;
+import com.board.back.model.Board;
+import com.board.back.repository.BoardRepository;
+
+@Service
+public class BoardService {
+	@Autowired
+	private BoardRepository boardRepository;
+	
+	/*
+	 * 게시글 출력
+	 */
+	public List<Board> getAllBoard() {
+		return boardRepository.findAll();
+	}
+	/*
+	 * 글 생성
+	 */
+	public Board createBoard(Board board) {
+		board.setCreatedTime(new Date());
+		board.setUpdatedTime(new Date());
+		return boardRepository.save(board);
+	}
+	/*
+	 * 글 상세보기
+	 */
+	public ResponseEntity<Board> getBoard(Integer no) {
+		Board board = boardRepository.findById(no).orElseThrow(() -> new ResourceNotFoundException("Not Found Data no [" + no + "]"));
+		return ResponseEntity.ok(board);
+	}
+
+	/*
+	 * 글 업데이트
+	 */
+	public ResponseEntity<Board> updateBoard(Integer no, Board updateBoard) {
+		Board board = boardRepository.findById(no).orElseThrow(() -> new ResourceNotFoundException("Not Found Data no [" + no + "]"));
+		
+		board.setType(updateBoard.getType());
+		board.setTitle(updateBoard.getTitle());
+		board.setContents(updateBoard.getContents());
+		board.setUpdatedTime(new Date());
+		
+		Board endUpdateBoard = boardRepository.save(board);
+		return ResponseEntity.ok(endUpdateBoard);
+	}
+	
+	/*
+	 * 글 삭제
+	 */
+	public ResponseEntity<Map<String, Boolean>> deleteBoard(Integer no) {
+		Board board = boardRepository.findById(no).orElseThrow(() -> new ResourceNotFoundException("Not Found Data no [" + no + "]"));
+		
+		boardRepository.delete(board);
+		Map<String, Boolean> response = new HashMap<>();
+		response.put("Deleted Board Data by id : [" + no + "]", Boolean.TRUE);
+		return ResponseEntity.ok(response);
+	}
+
+}
