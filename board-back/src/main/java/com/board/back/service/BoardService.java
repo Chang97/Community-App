@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -29,36 +31,42 @@ public class BoardService {
 	/*
 	 * 게시글 출력
 	 */
-	public ResponseEntity<Map> getPagingBoard(Integer pageNo) {
-
-		Map result = null;
-		
-		PagingUtil pu = new PagingUtil(pageNo, 5, 5);
-		List<Board> list = boardRepository.findFromTo(pu.getObjectStartNum(), pu.getObjectCountPerPage());
-		
-		pu.setObjectCountTotal(findAllCount());
-		pu.setCalcForPaging();
-		
-		log.info("pageNo : " + pageNo);
-		log.info(pu.toString());
-		
-		if (list == null || list.size() == 0) {
-			return null;
-		}
-		
-		result = new HashMap<>();
-		result.put("pagingData", pu);
-		result.put("list", list);
-		
-		return ResponseEntity.ok(result);
-
+//	public ResponseEntity<Map> getPagingBoard(Integer pageNo) {
+//
+//		Map result = null;
+//		
+//		PagingUtil pu = new PagingUtil(pageNo, 5, 5);
+//		List<Board> list = boardRepository.findFromTo(pu.getObjectStartNum(), pu.getObjectCountPerPage());
+//		
+//		pu.setObjectCountTotal(findAllCount());
+//		pu.setCalcForPaging();
+//		
+//		log.info("pageNo : " + pageNo);
+//		log.info(pu.toString());
+//		
+//		if (list == null || list.size() == 0) {
+//			return null;
+//		}
+//		
+//		result = new HashMap<>();
+//		result.put("pagingData", pu);
+//		result.put("list", list);
+//		
+//		return ResponseEntity.ok(result);
+//
+//	}
+	public Page<Board> getPagingBoard(Pageable pageable) {
+		return boardRepository.findAll(pageable);
 	}
+	
 	/*
 	 * 글 생성
 	 */
 	public Board createBoard(Board board) {
 		board.setCreatedTime(new Date());
 		board.setUpdatedTime(new Date());
+		board.setCounts(0);
+		board.setLikes(0);
 		return boardRepository.save(board);
 	}
 	/*
@@ -66,6 +74,8 @@ public class BoardService {
 	 */
 	public ResponseEntity<Board> getBoard(Integer no) {
 		Board board = boardRepository.findById(no).orElseThrow(() -> new ResourceNotFoundException("Not Found Data no [" + no + "]"));
+		board.setCounts(board.getCounts() + 1);
+		boardRepository.save(board);
 		return ResponseEntity.ok(board);
 	}
 
