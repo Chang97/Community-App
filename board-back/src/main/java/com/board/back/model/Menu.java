@@ -9,23 +9,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name="menu")
-@DynamicInsert
-@DynamicUpdate
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class Menu {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer no;
+	private Integer id;
 	
 	@Column(name = "menu_nm")
 	private String menuNm;
@@ -35,4 +34,7 @@ public class Menu {
 	
 	@Column(name = "updated_time")
 	private Date updatedTime;
+	
+	@Column(name = "del_yn", length = 1, columnDefinition = "char default 'N'")
+	private String delYn;
 }

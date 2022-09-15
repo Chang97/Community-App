@@ -1,5 +1,0 @@
-package com.board.back.repository;
-
-public interface MenuRepository {
-
-}

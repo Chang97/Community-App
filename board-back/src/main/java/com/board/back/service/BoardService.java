@@ -3,7 +3,6 @@ package com.board.back.service;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +10,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.board.back.exception.ResourceNotFoundException;
 import com.board.back.model.Board;
 import com.board.back.repository.BoardRepository;
-import com.board.back.util.PagingUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -55,6 +54,7 @@ public class BoardService {
 //		return ResponseEntity.ok(result);
 //
 //	}
+	@Transactional(readOnly = true)
 	public Page<Board> getPagingBoard(Pageable pageable) {
 		return boardRepository.findAll(pageable);
 	}
@@ -62,16 +62,16 @@ public class BoardService {
 	/*
 	 * 글 생성
 	 */
+	@Transactional
 	public Board createBoard(Board board) {
 		board.setCreatedTime(new Date());
 		board.setUpdatedTime(new Date());
-		board.setCounts(0);
-		board.setLikes(0);
 		return boardRepository.save(board);
 	}
 	/*
 	 * 글 상세보기
 	 */
+	@Transactional(readOnly = true)
 	public ResponseEntity<Board> getBoard(Integer no) {
 		Board board = boardRepository.findById(no).orElseThrow(() -> new ResourceNotFoundException("Not Found Data no [" + no + "]"));
 		board.setCounts(board.getCounts() + 1);
@@ -82,10 +82,9 @@ public class BoardService {
 	/*
 	 * 글 업데이트
 	 */
+	@Transactional
 	public ResponseEntity<Board> updateBoard(Integer no, Board updateBoard) {
 		Board board = boardRepository.findById(no).orElseThrow(() -> new ResourceNotFoundException("Not Found Data no [" + no + "]"));
-		
-		board.setType(updateBoard.getType());
 		board.setTitle(updateBoard.getTitle());
 		board.setContents(updateBoard.getContents());
 		board.setUpdatedTime(new Date());
@@ -97,6 +96,7 @@ public class BoardService {
 	/*
 	 * 글 삭제
 	 */
+	@Transactional
 	public ResponseEntity<Map<String, Boolean>> deleteBoard(Integer no) {
 		Board board = boardRepository.findById(no).orElseThrow(() -> new ResourceNotFoundException("Not Found Data no [" + no + "]"));
 		
