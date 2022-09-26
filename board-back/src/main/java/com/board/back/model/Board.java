@@ -13,6 +13,8 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,7 +26,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Board {
+public class Board extends BaseTime {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,7 +58,8 @@ public class Board {
 	@Column(name = "updated_time")
 	private Date updatedTime;
 	
-	@Column(name = "del_yn", length = 1, columnDefinition = "char default 'N'")
+	@ColumnDefault("'N'")
+	@Column(name = "del_yn", length = 1)
 	private String delYn;
 	
 }
