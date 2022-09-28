@@ -36,12 +36,6 @@ public class Menu extends BaseTime {
 	@Column(name = "menu_nm")
 	private String menuNm;
 	
-	@Column(name = "created_time")
-	private Date createdTime;
-	
-	@Column(name = "updated_time")
-	private Date updatedTime;
-	
 	@ColumnDefault("'N'")
 	@Column(name = "del_yn", length = 1)
 	private String delYn;

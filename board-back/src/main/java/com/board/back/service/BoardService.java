@@ -64,8 +64,6 @@ public class BoardService {
 	 */
 	@Transactional
 	public Board createBoard(Board board) {
-		board.setCreatedTime(new Date());
-		board.setUpdatedTime(new Date());
 		return boardRepository.save(board);
 	}
 	/*
@@ -87,7 +85,6 @@ public class BoardService {
 		Board board = boardRepository.findById(no).orElseThrow(() -> new ResourceNotFoundException("Not Found Data no [" + no + "]"));
 		board.setTitle(updateBoard.getTitle());
 		board.setContents(updateBoard.getContents());
-		board.setUpdatedTime(new Date());
 		
 		Board endUpdateBoard = boardRepository.save(board);
 		return ResponseEntity.ok(endUpdateBoard);

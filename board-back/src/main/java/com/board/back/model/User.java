@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 public class User extends BaseTime {
 	@Id //primary key
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //프로젝트에서 연결된 db에 넘버링 전략을 따라감
-	private int id;
+	private long id;
 	
 	@Column(nullable = false, length=30, unique = true)
 	private String username; //아이디
@@ -42,12 +42,6 @@ public class User extends BaseTime {
 	// DB는 RoleType이 없다.
 	@Enumerated(EnumType.STRING)
 	private RoleType role; //enum 사용하는게 좋음.//admin, user
-	
-	@Column(name = "created_time")
-	private Date createdTime;
-	
-	@Column(name = "updated_time")
-	private Date updatedTime;
 	
 	@ColumnDefault("'N'")
 	@Column(name = "del_yn", length = 1)

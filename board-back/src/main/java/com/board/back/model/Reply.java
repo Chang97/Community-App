@@ -35,18 +35,12 @@ public class Reply extends BaseTime {
 	private String content;
 	
 	@ManyToOne
-	@JoinColumn(name = "boardId")
+	@JoinColumn(name = "board_id")
 	private Board board;
 	
 	@ManyToOne
-	@JoinColumn(name = "userId")
+	@JoinColumn(name = "user_id")
 	private User user;
-	
-	@Column(name = "created_time")
-	private Date createdTime;
-	
-	@Column(name = "updated_time")
-	private Date updatedTime;
 	
 	@ColumnDefault("'N'")
 	@Column(name = "del_yn", length = 1)

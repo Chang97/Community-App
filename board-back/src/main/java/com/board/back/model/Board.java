@@ -34,32 +34,28 @@ public class Board extends BaseTime {
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "menu_id")
+	@JoinColumn(name = "menu_id", nullable = false)
 	private Menu menu;
 	
-	@Column(nullable = false, length = 20)
+	@Column(nullable = false, length = 200)
 	private String title;
 	
 	@Lob
 	private String contents;
 	
-	@Column(name = "member_id")
-	private Long memberId;
+	@Column(name = "user_id", nullable = false)
+	private User user;
 	
-	@Column(name = "likes", columnDefinition = "integer default 0")
+	@ColumnDefault("0")
+	@Column(name = "likes")
 	private Integer likes;
 	
-	@Column(name = "counts", columnDefinition = "integer default 0")
+	@ColumnDefault("0")
+	@Column(name = "counts")
 	private Integer counts;
 	
-	@Column(name = "created_time")
-	private Date createdTime;
-	
-	@Column(name = "updated_time")
-	private Date updatedTime;
-	
 	@ColumnDefault("'N'")
-	@Column(name = "del_yn", length = 1)
+	@Column(name = "del_yn", nullable = false, length = 1)
 	private String delYn;
 	
 }
