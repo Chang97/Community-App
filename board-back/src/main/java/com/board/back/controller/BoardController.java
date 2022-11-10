@@ -30,15 +30,8 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 	
-//	@GetMapping("/board")
-//	public ResponseEntity<Map> getAllBoards(@RequestParam(value = "pageNo", required=false) Integer pageNo) {
-//		if (pageNo == null || pageNo <= 0)
-//			pageNo = 1;
-//		return boardService.getPagingBoard(pageNo);
-//	}
-	
 	@GetMapping("/board")
-	public Page<Board> getAllBoards(@PageableDefault(size = 10, sort="no", direction = Sort.Direction.DESC) Pageable pageable) {
+	public Page<Board> getAllBoards(@PageableDefault(size = 10, sort="id", direction = Sort.Direction.DESC) Pageable pageable) {
 		
 		return boardService.getPagingBoard(pageable);
 	}
@@ -48,19 +41,19 @@ public class BoardController {
 		return boardService.createBoard(board);
 	}
 	
-	@GetMapping("/board/{no}")
-	public ResponseEntity<Board> createBoard(@PathVariable Integer no) {
-		return boardService.getBoard(no);
+	@GetMapping("/board/{id}")
+	public ResponseEntity<Board> getOneBoard(@PathVariable Long id) {
+		return boardService.getBoard(id);
 	}
 	
-	@PutMapping("/board/{no}")
-	public ResponseEntity<Board> updateBoard(@PathVariable Integer no, @RequestBody Board board) {
-		return boardService.updateBoard(no, board);
+	@PutMapping("/board/{id}")
+	public ResponseEntity<Board> updateBoard(@PathVariable Long id, @RequestBody Board board) {
+		return boardService.updateBoard(id, board);
 	}
 	
-	@DeleteMapping("/board/{no}")
-	public ResponseEntity<Map<String, Boolean>> deleteBoard(@PathVariable Integer no) {
-		return boardService.deleteBoard(no);
+	@DeleteMapping("/board/{id}")
+	public ResponseEntity<Map<String, Boolean>> deleteBoard(@PathVariable Long id) {
+		return boardService.deleteBoard(id);
 	}
 	
 }

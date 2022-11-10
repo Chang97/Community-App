@@ -1,7 +1,6 @@
 package com.board.back.service;
 
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,9 +15,6 @@ import com.board.back.exception.ResourceNotFoundException;
 import com.board.back.model.Board;
 import com.board.back.repository.BoardRepository;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service
 public class BoardService {
 	@Autowired
@@ -27,62 +23,28 @@ public class BoardService {
 	public int findAllCount() {
 		return (int) boardRepository.count();
 	}
-	/*
-	 * 게시글 출력
-	 */
-//	public ResponseEntity<Map> getPagingBoard(Integer pageNo) {
-//
-//		Map result = null;
-//		
-//		PagingUtil pu = new PagingUtil(pageNo, 5, 5);
-//		List<Board> list = boardRepository.findFromTo(pu.getObjectStartNum(), pu.getObjectCountPerPage());
-//		
-//		pu.setObjectCountTotal(findAllCount());
-//		pu.setCalcForPaging();
-//		
-//		log.info("pageNo : " + pageNo);
-//		log.info(pu.toString());
-//		
-//		if (list == null || list.size() == 0) {
-//			return null;
-//		}
-//		
-//		result = new HashMap<>();
-//		result.put("pagingData", pu);
-//		result.put("list", list);
-//		
-//		return ResponseEntity.ok(result);
-//
-//	}
+	
 	@Transactional(readOnly = true)
 	public Page<Board> getPagingBoard(Pageable pageable) {
 		return boardRepository.findAll(pageable);
 	}
 	
-	/*
-	 * 글 생성
-	 */
 	@Transactional
 	public Board createBoard(Board board) {
+		
 		return boardRepository.save(board);
 	}
-	/*
-	 * 글 상세보기
-	 */
 	@Transactional(readOnly = true)
-	public ResponseEntity<Board> getBoard(Integer no) {
-		Board board = boardRepository.findById(no).orElseThrow(() -> new ResourceNotFoundException("Not Found Data no [" + no + "]"));
+	public ResponseEntity<Board> getBoard(Long id) {
+		Board board = boardRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Not Found Data no [" + id + "]"));
 		board.setCounts(board.getCounts() + 1);
 		boardRepository.save(board);
 		return ResponseEntity.ok(board);
 	}
 
-	/*
-	 * 글 업데이트
-	 */
 	@Transactional
-	public ResponseEntity<Board> updateBoard(Integer no, Board updateBoard) {
-		Board board = boardRepository.findById(no).orElseThrow(() -> new ResourceNotFoundException("Not Found Data no [" + no + "]"));
+	public ResponseEntity<Board> updateBoard(Long id, Board updateBoard) {
+		Board board = boardRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Not Found Data no [" + id + "]"));
 		board.setTitle(updateBoard.getTitle());
 		board.setContents(updateBoard.getContents());
 		
@@ -90,16 +52,13 @@ public class BoardService {
 		return ResponseEntity.ok(endUpdateBoard);
 	}
 	
-	/*
-	 * 글 삭제
-	 */
 	@Transactional
-	public ResponseEntity<Map<String, Boolean>> deleteBoard(Integer no) {
-		Board board = boardRepository.findById(no).orElseThrow(() -> new ResourceNotFoundException("Not Found Data no [" + no + "]"));
+	public ResponseEntity<Map<String, Boolean>> deleteBoard(Long id) {
+		Board board = boardRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Not Found Data no [" + id + "]"));
 		
 		boardRepository.delete(board);
 		Map<String, Boolean> response = new HashMap<>();
-		response.put("Deleted Board Data by id : [" + no + "]", Boolean.TRUE);
+		response.put("Deleted Board Data by id : [" + id + "]", Boolean.TRUE);
 		return ResponseEntity.ok(response);
 	}
 	

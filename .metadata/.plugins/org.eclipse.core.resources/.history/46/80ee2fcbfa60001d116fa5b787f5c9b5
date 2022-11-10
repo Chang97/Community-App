@@ -1,0 +1,19 @@
+package com.board.back.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PutMapping;
+
+import com.board.back.dto.UserDTO;
+import com.board.back.model.User;
+import com.board.back.service.UserService;
+
+public class UserContoller {
+
+	@Autowired
+	private UserService userService;
+	
+	@PutMapping("/join")
+	public User createUser(UserDTO dto) {
+		return userService.createBoard(dto);
+	}
+}

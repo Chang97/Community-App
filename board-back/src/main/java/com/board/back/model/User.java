@@ -1,49 +1,93 @@
 package com.board.back.model;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
 @Entity
 @Table(name="user")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class User extends BaseTime {
+@DynamicInsert
+@DynamicUpdate
+@Getter
+public class User extends BaseTime  implements UserDetails{
 	@Id //primary key
-	@GeneratedValue(strategy = GenerationType.IDENTITY) //ÇÁ·ÎÁ§Æ®¿¡¼­ ¿¬°áµÈ db¿¡ ³Ñ¹ö¸µ Àü·«À» µû¶ó°¨
+	@GeneratedValue(strategy = GenerationType.IDENTITY) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ dbï¿½ï¿½ ï¿½Ñ¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	private long id;
 	
 	@Column(nullable = false, length=30, unique = true)
-	private String username; //¾ÆÀÌµğ
+	private String username; //ï¿½ï¿½ï¿½Ìµï¿½
 	
 	@Column(nullable = false, length=300)
-	private String password; //ÇØ½¬·Î ¾ÏÈ£È­ ÇÏ±â ‹š¹®¿¡ ³Ë³ËÇÏ°Ô ÀÛ¼º
+	private String password; //ï¿½Ø½ï¿½ï¿½ï¿½ ï¿½ï¿½È£È­ ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë³ï¿½ï¿½Ï°ï¿½ ï¿½Û¼ï¿½
 	
 	@Column(nullable = false, length=50)
 	private String email;
 	
 	//@ColumnDefault("'user'")
-	// DB´Â RoleTypeÀÌ ¾ø´Ù.
-	@Enumerated(EnumType.STRING)
-	private RoleType role; //enum »ç¿ëÇÏ´Â°Ô ÁÁÀ½.//admin, user
+	@Column(nullable = false, length=255)
+	private String role; 
 	
 	@ColumnDefault("'N'")
 	@Column(name = "del_yn", length = 1)
 	private String delYn;
+	
+	
+	
+	 //ê³„ì •ì´ ê°–ê³ ìˆëŠ” ê¶Œí•œ ëª©ë¡ì€ ë¦¬í„´
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        
+        Collection<GrantedAuthority> collectors = new ArrayList<>();
+        collectors.add(() -> {
+            return "ê³„ì •ë³„ ë“±ë¡í•  ê¶Œí•œ";
+        });
+        
+        //collectors.add(new SimpleGrantedAuthority("Role"));
+        
+        return collectors;
+    }
+    
+	//ê³„ì •ì´ ë§Œë£Œë˜ì§€ ì•Šì•˜ëŠ”ì§€ ë¦¬í„´ (true: ë§Œë£Œ ì•ˆë¨)
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    //ê³„ì •ì´ ì ê²¨ìˆëŠ”ì§€ ì•Šì•˜ëŠ”ì§€ ë¦¬í„´. (true: ì ê¸°ì§€ ì•ŠìŒ)
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    //ë¹„ë°€ë²ˆí˜¸ê°€ ë§Œë£Œë˜ì§€ ì•Šì•˜ëŠ”ì§€ ë¦¬í„´í•œë‹¤. (true: ë§Œë£Œ ì•ˆë¨)
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    //ê³„ì •ì´ í™œì„±í™”(ì‚¬ìš©ê°€ëŠ¥)ì¸ì§€ ë¦¬í„´ (true: í™œì„±í™”)
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
