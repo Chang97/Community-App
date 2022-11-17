@@ -1,0 +1,5 @@
+package com.board.back.config;
+
+public class WebMvcConfig {
+
+}

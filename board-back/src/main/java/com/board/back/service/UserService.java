@@ -20,7 +20,7 @@ public class UserService {
 				.username(dto.getUsername())
 				.email(dto.getEmail())
 				.password(dto.getPassword())
-				.role("USER")
+				.role(dto.getRole())
 				.build();
 		return userRepository.save(user);
 	}
