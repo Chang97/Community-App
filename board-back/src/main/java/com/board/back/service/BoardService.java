@@ -15,9 +15,11 @@ import com.board.back.exception.ResourceNotFoundException;
 import com.board.back.model.Board;
 import com.board.back.repository.BoardRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class BoardService {
-	@Autowired
 	private BoardRepository boardRepository;
 	
 	public int findAllCount() {

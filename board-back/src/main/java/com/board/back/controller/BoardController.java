@@ -19,15 +19,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.board.back.model.Board;
+import com.board.back.service.AuthService;
 import com.board.back.service.BoardService;
+
+import lombok.RequiredArgsConstructor;
 
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api")
 public class BoardController {
 
-	@Autowired
 	private BoardService boardService;
 	
 	@GetMapping("/board")

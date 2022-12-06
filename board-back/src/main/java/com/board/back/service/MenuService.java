@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import com.board.back.model.Menu;
 import com.board.back.repository.MenuRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class MenuService {
 	
-	@Autowired
 	private MenuRepository menuRepository;
 
 	public List<Menu> getAllMenus() {

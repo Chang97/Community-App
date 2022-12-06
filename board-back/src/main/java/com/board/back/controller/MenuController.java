@@ -9,14 +9,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.board.back.model.Menu;
+import com.board.back.service.AuthService;
 import com.board.back.service.MenuService;
+
+import lombok.RequiredArgsConstructor;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/nav")
+@RequiredArgsConstructor
 public class MenuController {
 
-	@Autowired
 	private MenuService menuService;
 	
 	@GetMapping("/menu")

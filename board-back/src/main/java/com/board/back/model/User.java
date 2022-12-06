@@ -5,6 +5,8 @@ import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,15 +45,15 @@ public class User extends BaseTime  implements UserDetails{
 	@Column(nullable = false, length=50)
 	private String email;
 	
-	//@ColumnDefault("'user'")
-	@Column(nullable = false, length=255)
-	private String role; 
+	@Enumerated(EnumType.STRING)
+	private RoleType role; 
 	
 	@ColumnDefault("'N'")
 	@Column(name = "del_yn", length = 1)
 	private String delYn;
 	
 	
+	public void setPassword(String password) { this.password = password; }
 	
 	 //계정이 갖고있는 권한 목록은 리턴
     @Override

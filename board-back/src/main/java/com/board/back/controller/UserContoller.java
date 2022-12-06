@@ -1,7 +1,6 @@
 package com.board.back.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,33 +8,31 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.board.back.dto.UserDTO;
-import com.board.back.model.User;
+import com.board.back.dto.ChangePasswordRequestDto;
+import com.board.back.dto.UserResponseDto;
 import com.board.back.service.UserService;
+
+import lombok.RequiredArgsConstructor;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/auth")
+@RequiredArgsConstructor
+@RequestMapping("/user")
 public class UserContoller {
 
-	@Autowired
-	private UserService userService;
-	
-	@PostMapping("/join")
-	public User createUser(@RequestBody UserDTO dto) {
-		// 패스워드 암호화
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
-		// 권한설정 (일반회원)
-		dto.setRole("USER");
-		
-		return userService.createBoard(dto);
-	}
-	
-	@GetMapping("/login")
-	public String loginForm() {
+	private final UserService userService;
 
-		return "/join";
-	}
+    @GetMapping("/me")
+    public ResponseEntity<UserResponseDto> getMyUserInfo() {
+        UserResponseDto myInfoBySecurity = userService.getMyInfoBySecurity();
+        System.out.println(myInfoBySecurity.getUsername());
+        return ResponseEntity.ok((myInfoBySecurity));
+        // return ResponseEntity.ok(memberService.getMyInfoBySecurity());
+    }
+
+    @PostMapping("/password")
+    public ResponseEntity<UserResponseDto> setUserPassword(@RequestBody ChangePasswordRequestDto request) {
+        return ResponseEntity.ok(userService.changeUserPassword(request.getUsername(),request.getExPassword(), request.getNewPassword()));
+    }
 	
 }
