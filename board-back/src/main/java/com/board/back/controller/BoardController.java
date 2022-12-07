@@ -31,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api")
 public class BoardController {
 
-	private BoardService boardService;
+	private final BoardService boardService;
 	
 	@GetMapping("/board")
 	public Page<Board> getAllBoards(@PageableDefault(size = 10, sort="id", direction = Sort.Direction.DESC) Pageable pageable) {

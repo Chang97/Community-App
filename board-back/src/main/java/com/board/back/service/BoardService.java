@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class BoardService {
-	private BoardRepository boardRepository;
+	private final BoardRepository boardRepository;
 	
 	public int findAllCount() {
 		return (int) boardRepository.count();

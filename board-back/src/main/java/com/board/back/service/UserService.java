@@ -20,9 +20,9 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
 	@Autowired
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
 	
-	private PasswordEncoder passwordEncoder;
+	private final PasswordEncoder passwordEncoder;
 	
 	public UserResponseDto getMyInfoBySecurity() {
         return userRepository.findById(SecurityUtil.getCurrentMemberId())

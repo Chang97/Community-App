@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MenuService {
 	
-	private MenuRepository menuRepository;
+	private final MenuRepository menuRepository;
 
 	public List<Menu> getAllMenus() {
 		

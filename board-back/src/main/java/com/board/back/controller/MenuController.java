@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MenuController {
 
-	private MenuService menuService;
+	private final MenuService menuService;
 	
 	@GetMapping("/menu")
 	public List<Menu> getAllMenus() {
