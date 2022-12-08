@@ -55,6 +55,15 @@ public class User extends BaseTime  implements UserDetails{
 	
 	public void setPassword(String password) { this.password = password; }
 	
+	@Builder
+    public User(Long id, String username, String email, String password, RoleType role) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+    }
+	
 	 //계정이 갖고있는 권한 목록은 리턴
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
