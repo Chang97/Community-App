@@ -15,11 +15,14 @@ import com.board.back.model.User;
 import com.board.back.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class AuthService {
+	
     private final AuthenticationManagerBuilder managerBuilder;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -29,7 +32,11 @@ public class AuthService {
         if (userRepository.existsByUsername(requestDto.getUsername())) {
             throw new RuntimeException("이미 가입되어 있는 유저입니다");
         }
-
+        
+        log.info(requestDto.getUsername());
+        log.info(requestDto.getPassword());
+        log.info(requestDto.getEmail());
+        
         User user = requestDto.toUser(passwordEncoder);
         return UserResponseDto.of(userRepository.save(user));
     }

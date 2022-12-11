@@ -57,7 +57,7 @@ public class User extends BaseTime  implements UserDetails{
 	
 	@Builder
     public User(Long id, String username, String email, String password, RoleType role) {
-        this.id = id;
+        // this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
