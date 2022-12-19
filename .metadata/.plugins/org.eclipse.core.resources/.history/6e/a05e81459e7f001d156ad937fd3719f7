@@ -31,9 +31,6 @@ public class Menu extends BaseTime {
 	@Column(name = "parent_id")
 	private Integer parentId;
 	
-	@Column(name = "menu_cd")
-	private String menuCd;
-	
 	@Column(name = "menu_nm")
 	private String menuNm;
 	

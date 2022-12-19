@@ -4710,3 +4710,6 @@ This warning can be switched off on the Team > Git > Confirmations and Warnings 
 
 !ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2022-12-13 21:58:52.090
 !MESSAGE executing callback sts4.classpath.PeHIrBae SUCCESS [done]
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-13 22:31:04.174
+!MESSAGE Server returned lastModified <= 0 for https://raw.githubusercontent.com/IntelliJIdeaKeymap4Eclipse/IntelliJIdeaKeymap4Eclipse-update-site/main/content.jar
