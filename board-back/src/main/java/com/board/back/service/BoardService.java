@@ -4,7 +4,6 @@ package com.board.back.service;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.board.back.exception.ResourceNotFoundException;
 import com.board.back.model.Board;
+import com.board.back.model.Menu;
 import com.board.back.repository.BoardRepository;
+import com.board.back.repository.MenuRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,14 +22,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BoardService {
 	private final BoardRepository boardRepository;
+	private final MenuRepository menuRepository;
 	
 	public int findAllCount() {
 		return (int) boardRepository.count();
 	}
 	
 	@Transactional(readOnly = true)
-	public Page<Board> getPagingBoard(Pageable pageable) {
-		return boardRepository.findAll(pageable);
+	public Page<Board> getPagingBoard(String menuCd, Pageable pageable) {
+		Menu menu = menuRepository.findByMenuCd(menuCd);
+		int menuId = menu.getId();
+		
+		return boardRepository.findByMenuId(menuId, pageable);
 	}
 	
 	@Transactional

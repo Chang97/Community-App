@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.board.back.model.Board;
@@ -33,10 +34,11 @@ public class BoardController {
 
 	private final BoardService boardService;
 	
-	@GetMapping("/board")
-	public Page<Board> getAllBoards(@PageableDefault(size = 10, sort="id", direction = Sort.Direction.DESC) Pageable pageable) {
+	@GetMapping("/{menuCd}")
+	public Page<Board> getAllBoards(@RequestParam String menuCd, 
+			@PageableDefault(size = 10, sort="id", direction = Sort.Direction.DESC) Pageable pageable) {
 		
-		return boardService.getPagingBoard(pageable);
+		return boardService.getPagingBoard(menuCd, pageable);
 	}
 	
 	@PostMapping("/board")
