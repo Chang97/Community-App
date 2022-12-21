@@ -35,7 +35,7 @@ public class BoardController {
 	private final BoardService boardService;
 	
 	@GetMapping("/{menuCd}")
-	public Page<Board> getAllBoards(@RequestParam String menuCd, 
+	public Page<Board> getAllBoards(@PathVariable String menuCd, 
 			@PageableDefault(size = 10, sort="id", direction = Sort.Direction.DESC) Pageable pageable) {
 		
 		return boardService.getPagingBoard(menuCd, pageable);
