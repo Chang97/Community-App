@@ -1,17 +1,23 @@
 import { useState } from "react";
 import React  from 'react';
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import BoardService from "../../service/BoardService";
 import { useNavigate, useParams } from "react-router-dom";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
+import AuthContext from '../../store/auth_context';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 
 const ReadBoardComponent = (props) => {
+    const authCtx = useContext(AuthContext);
     const navigate = useNavigate();
+
     const { id } = useParams();
     const [board, setBoard] = useState({});
     const [user, setUser] = useState({});
+    const [loginUsername, setLoginUsername] = useState('');
+
+    let isLogin = authCtx.isLoggedIn;
 
     useEffect(() => {
         BoardService.getOneBoard(id).then(res => {
@@ -21,6 +27,15 @@ const ReadBoardComponent = (props) => {
         });
         // eslint-disable-next-line
     }, []);
+
+    useEffect(() => {
+        if (isLogin) {
+            console.log('start');
+            authCtx.getUser();
+            setLoginUsername(authCtx.userObj.username);
+        }
+        // eslint-disable-next-line
+    }, [isLogin]);
 
     const updateBoard = () => {
         navigate(`/create-board/${id}`, {state : {gubun : 'update'}});
@@ -97,8 +112,8 @@ const ReadBoardComponent = (props) => {
                                 </div>
                                 {returnDate(board.createdDate, board.modifiedDate)}
                                 <button className='btn btn-primary' onClick={goToList}>글 목록</button>
-                                <button className='btn btn-success' onClick={updateBoard}>글 수정</button>
-                                <button className='btn btn-danger' onClick={deleteView}>글 삭제</button>
+                                {loginUsername === user.username && <button className='btn btn-success' onClick={updateBoard}>글 수정</button>}
+                                {loginUsername === user.username && <button className='btn btn-danger' onClick={deleteView}>글 삭제</button>}
                             </form>
                         </div>
                     </div>
